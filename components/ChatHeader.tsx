@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserProfile } from '../types';
-import { ArrowLeftIcon, PhoneIcon, VideoCameraIcon, EllipsisVerticalIcon } from './icons/HeroIcons';
+import { ArrowLeftIcon } from './icons/HeroIcons';
 
 interface ChatHeaderProps {
   user: UserProfile;
@@ -27,17 +27,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ user }) => {
         <h2 className="font-semibold text-base md:text-lg truncate">{user.name}</h2>
         <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 cursor-pointer hover:underline">{user.status || 'Tap here for contact info'}</p>
       </div>
-      <div className="flex items-center space-x-1 md:space-x-2">
-        <button aria-label="Video Call" className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-full transition-colors">
-          <VideoCameraIcon className="w-5 h-5 md:w-6 md:h-6" />
-        </button>
-        <button aria-label="Voice Call" className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-full transition-colors">
-          <PhoneIcon className="w-5 h-5 md:w-6 md:h-6" />
-        </button>
-        <button aria-label="More options" className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-full transition-colors">
-          <EllipsisVerticalIcon className="w-5 h-5 md:w-6 md:h-6" />
-        </button>
-      </div>
+      {/* Call and options buttons removed */}
     </div>
   );
 };
