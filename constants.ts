@@ -5,7 +5,7 @@ export const ACCESS_CODE = "ChatSoNSw25"; // Secret access code
 
 export const CHAT_PARTICIPANTS: { me: ChatParticipant, other: ChatParticipant } = {
   me: { name: "Swayamsidh Panda", avatarUrl: "https://picsum.photos/seed/sway/100/100" }, // Placeholder for 'me'
-  other: { name: "Sonali Ipsita •School", avatarUrl: "https://picsum.photos/seed/sonali/100/100" }
+  other: { name: "Sonali Ipsita •School", avatarUrl: "my-avatar.png" }
 };
 
 export const initialMessages: Message[] = [

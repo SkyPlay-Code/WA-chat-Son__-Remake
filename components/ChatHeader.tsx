@@ -25,7 +25,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ user }) => {
       )}
       <div className="flex-grow">
         <h2 className="font-semibold text-base md:text-lg truncate">{user.name}</h2>
-        <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 cursor-pointer hover:underline">{user.status || 'Tap here for contact info'}</p>
+        {/* Display status only if it exists, otherwise display nothing */}
+        {user.status && (
+          <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400">
+            {user.status}
+          </p>
+        )}
       </div>
       {/* Call and options buttons removed */}
     </div>
