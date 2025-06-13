@@ -4,8 +4,8 @@ import { Message, SenderType, ChatParticipant } from './types';
 export const ACCESS_CODE = "ChatSoNSw25"; // Secret access code
 
 export const CHAT_PARTICIPANTS: { me: ChatParticipant, other: ChatParticipant } = {
-  me: { name: "Swayamsidh Panda", avatarUrl: "https://picsum.photos/seed/sway/100/100" }, // Placeholder for 'me'
-  other: { name: "Sonali Ipsita •School", avatarUrl: "my-avatar.png" }
+  me: { name: "Swayamsidh Panda", avatarUrl: "/me.png" }, // Updated to local path
+  other: { name: "Sonali Ipsita •School", avatarUrl: "/other.png" } // Updated to local path
 };
 
 export const initialMessages: Message[] = [
