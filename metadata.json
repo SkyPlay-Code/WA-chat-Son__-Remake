@@ -1,0 +1,5 @@
+{
+  "name": "Confidential Chat Viewer",
+  "description": "A web application to view a pre-defined chat conversation after entering an access code.",
+  "requestFramePermissions": []
+}

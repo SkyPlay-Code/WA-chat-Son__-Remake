@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confidential Chat Viewer - Enhanced</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      /* Ensure body takes full height for potential full-page backgrounds */
+      min-height: 100vh;
+      background-color: #f0f2f5; /* A neutral default background */
+    }
+    #root {
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden; /* Prevent scrollbars on root if content overflows due to animations */
+    }
+
+    /* Enhanced Scrollbar Styling (Webkit) */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0,0,0,0.3);
+    }
+    /* For Firefox */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,0.2) rgba(0,0,0,0.05);
+    }
+
+    /* Global Animations */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+      20%, 40%, 60%, 80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes fade-in {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .animate-fade-in {
+      animation: fade-in 0.5s ease-out;
+    }
+
+    @keyframes fade-in-up {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fade-in-up 0.4s ease-out forwards;
+    }
+    
+    @keyframes fade-in-down {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-down {
+        animation: fade-in-down 0.5s ease-out forwards;
+    }
+
+    /* Animated Gradient Background for Access Screen */
+    .animated-gradient-background {
+      background: linear-gradient(-45deg, #008080, #007BA7, #0066b2, #4682b4); /* Teal to various blues */
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: white; /* Default text color for this background */
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Subtle Pattern for Chat Background - Light Mode */
+    .chat-bg-light {
+      background-color: #e5ddd5; /* WhatsApp-like light background color */
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAnElEQVR42u3RMQEAAAgDoC2G/Yt70ACgqCnHGGMMAAAAYG4AADQZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADBkAAAwZAAAMGQAADGYAADQZAAAMGQAAjDHGGAAAAP4AN3gCI2Vj9L4AAAAASUVORK5CYII="); /* Very subtle pattern, repeat */
+    }
+
+    /* Subtle Pattern for Chat Background - Dark Mode */
+    .dark .chat-bg-dark {
+      background-color: #0b141a; /* WhatsApp-like dark background color */
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAArVJREFUeAHt3EFKw1AUBUGFoOgC4gK6qQu4gICKu4oLCHYiO4giKAgu4gIu4gLqBuoGk7lMkmnStJ2D8z8ZchLZ7N5PSQkAAAAAAAAAAAAAABAPZX41KkutyWo1nUdFjXpUDWuSjGVEGZ2pQ1r0nKR3+U16T9L9NqtfqS3JGOr7b9c16Q3Jr84qEuSPlS5JmS09xZLbMkB3Sg6y7W+PNmdLf0mNESDRSSfJ8T9HSJgmfRXGPtZSJkln0cxl7WWyZBZdHeZe1o5kE/04xv7WOiZFNtPBGftaRZgkK0oUu9qZypI1JMcVu9qZy5J1JMcVu9qdy5JtJLfE2M/ax2SCKscRe1v7mBTRxEeMva39TCpoYhHjX2u/kwrqPJPx0/HbP4YEvDIk+NMyQ5I/ZVktyd+qvK8XpZ7k3zW9kNwfk7yZBTnJjxleS/KbGck/572T/JkF2S3Ja0nenfSdJEkuEzSNJMkMmjRZJsksmjRZJskMmvwSk8sMmVz0lZkMmVwknQpLzJkkj5ZpJJ8mScqUZJMkSbrLkmQHSZLVkqRzSJKVklSbJFklSbVJkjGSJNelSMaQJKtLlIwlykSUJLkkk2ZJMoMkGUuSzCFJRpMkuRGSaSZpJEkmkSSbS5LMJElmkSQzSJJppKj5AUnGkqQzSJLVJEmGkqQzSJJxJGlJkvEkqUkScSRpSZLxJGlJknEkqUmSUSSpoVBkkV1iUgxJ/skpyZNSJClJEoUkKUqS9CSJSZLEJElKkiQxSVKRJDElFUmSwySpSBJ+kiQvScJLkvKSJLkkKS9JykqS9JL0loskaUmSnpK0JClPSZqUnCTpSFLSkqQ9JelLkj6U9CRJ+lPSt4J+AAAAAAAAAAAAAADAv30BD+10yT6Zl80AAAAASUVORK5CYII="); /* Darker subtle pattern */
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
